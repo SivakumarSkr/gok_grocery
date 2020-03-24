@@ -17,6 +17,7 @@ class Order(models.Model):
     name_applied = models.CharField(max_length=100, null=False, blank=False)
     time = models.DateTimeField(auto_now_add=True)
     address = models.TextField(null=False, blank=False)
+    shop = models.ForeignKey('orders.Shop', on_delete=models.SET_NULL, related_name='shop_orders')
     ration_card_no = models.CharField(max_length=10, null=False, blank=True)
     phone = PhoneNumberField(null=False, blank=False)
     is_delivered = models.BooleanField(default=False)
@@ -106,3 +107,16 @@ class OrderItem(models.Model):
 
     def check_max_quantity(self):
         return self.quantity > self.item.max_quantity
+
+
+class Shop(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    name = models.CharField(max_length=200, blank=False)
+    owner = models.CharField(max_length=100, blank=False)
+    phone = PhoneNumberField(blank=False)
+    address = models.TextField(blank=False)
+    stock = models.ManyToManyField(Item, related_name='shops')
+
+    def __str__(self):
+        return self.name
+

@@ -8,12 +8,11 @@ class User(AbstractUser):
     pass
 
 
-class Voluteer(models.Model):
+class Voluteer(User):
     pass
 
 
 class Area(models.Model):
     name = models.CharField(max_length=100, blank=False)
     centre = models.TextField(blank=False)
-
-
+    # head = models.OneToOneField(User)
